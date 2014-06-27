@@ -65,8 +65,8 @@ public class SwcContainer{
 
     private int imageWidth, imageHeight, imageDepth;
     private double pixSize[] = new double[3];
-	private String[] drawmode_label = {"Line", "Diam", "Linear"};
-	private int drawmode;
+    private String[] drawmode_label = {"Line", "Diam", "Linear", "Line2"};
+    private int drawmode;
     private boolean loadOk;
     
     public SwcContainer()
@@ -375,7 +375,7 @@ public class SwcContainer{
 		int end_pos[] = new int[3];
 		double length;
 
-		byte pixels[][] = new byte[imageDepth][imageWidth*imageHeight];
+		boolean pixels[][] = new boolean[imageDepth][imageWidth*imageHeight];
 
 		if(drawmode==0){
 			for(int j=2; j<swc_vec.size(); j++){
@@ -411,7 +411,7 @@ public class SwcContainer{
 
 						pixels[(int)(pos[2]/pixSize[2])]
 							[(int)(pos[1]/pixSize[1])*imageWidth
-							 +(int)(pos[0]/pixSize[0])] = (byte)255;
+							 +(int)(pos[0]/pixSize[0])] = true;
 
 						plotnum++;
 					}else{
@@ -420,15 +420,18 @@ public class SwcContainer{
 					pos[0] += dir[0];
 					pos[1] += dir[1];
 					pos[2] += dir[2];
-				}while((dir[0]>0.0 && pos[0] < pos[0])
-					   || (dir[0]<0.0 && pos[0] > pos[0]));
+				}while((dir[0]>0.0 && pos[0] < swcparent.pos[0])
+					   || (dir[0]<0.0 && pos[0] > swcparent.pos[0]));
 
 			}
 
 		}else if(drawmode==1){
 			IJ.error("Error : this draw mode is under construction.");
+			return;
 		}else if(drawmode==2){
 			IJ.error("Error : this draw mode is under construction.");
+			return;
+		}else if(drawmode==3){
 		}
 
 		System.out.println("(DEBUG) Number of Plot : "+ plotnum);
@@ -436,13 +439,23 @@ public class SwcContainer{
 
 		for(int j=0; j<imageDepth; j++){
 			ByteProcessor bp = new ByteProcessor( imageWidth, imageHeight );
-			bp.setPixels( pixels[j] );
+
+			byte byte_pixels[] = new byte[imageWidth*imageHeight];
+			for(int x=0; x<imageWidth; x++){
+			    for(int y=0; y<imageHeight; y++){
+				byte_pixels[y*imageWidth + x] = (byte)(pixels[j][y*imageWidth+x]?255:0);
+			    }
+			}
+			
+
+			bp.setPixels( byte_pixels );
 			newStack.addSlice( "", bp );
 		}
 
 		Calibration cal;
 		ImagePlus swcimage = new ImagePlus( short_filename, newStack );
 		cal = swcimage.getCalibration();
+
 		System.out.println("(DEBUG) " + cal.getUnit() +" \n");
 		cal.setUnit("um");
 		cal.pixelWidth = pixSize[0];
@@ -455,6 +468,7 @@ public class SwcContainer{
 		if(outside>0){
 			System.out.println("Warning : outside_point = "+outside);
 		}
+
 
 	}
 
