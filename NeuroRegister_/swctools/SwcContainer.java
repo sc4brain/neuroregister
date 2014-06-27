@@ -432,6 +432,8 @@ public class SwcContainer{
 			IJ.error("Error : this draw mode is under construction.");
 			return;
 		}else if(drawmode==3){
+			IJ.error("Error : this draw mode is under construction.");
+			return;
 		}
 
 		System.out.println("(DEBUG) Number of Plot : "+ plotnum);
@@ -441,8 +443,8 @@ public class SwcContainer{
 			ByteProcessor bp = new ByteProcessor( imageWidth, imageHeight );
 
 			byte byte_pixels[] = new byte[imageWidth*imageHeight];
-			for(int x=0; x<imageWidth; x++){
-			    for(int y=0; y<imageHeight; y++){
+			for(int y=0; y<imageHeight; y++){
+			    for(int x=0; x<imageWidth; x++){
 				byte_pixels[y*imageWidth + x] = (byte)(pixels[j][y*imageWidth+x]?255:0);
 			    }
 			}
@@ -451,6 +453,7 @@ public class SwcContainer{
 			bp.setPixels( byte_pixels );
 			newStack.addSlice( "", bp );
 		}
+
 
 		Calibration cal;
 		ImagePlus swcimage = new ImagePlus( short_filename, newStack );
