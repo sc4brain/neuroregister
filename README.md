@@ -3,6 +3,9 @@ neuroregister
 
 Fiji/ImageJ plugin to register neurons to Standard Brain. This plugin based on "Name Landmarks and Register" plugin in VIB.
 
+# Download
+- **NEW!** [ver0.3](https://github.com/sc4brain/neuroregister/releases/download/ver0.3/NeuroRegister_.jar) 
+
 # Usage
 
 ## prepare
