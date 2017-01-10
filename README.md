@@ -30,7 +30,8 @@ Suite FIJI and FIJI_PLUGINS variables for your environment.
 $ make
 ```
 
-
+## TODO
+- Rewrite SCALE header
 
 
 
